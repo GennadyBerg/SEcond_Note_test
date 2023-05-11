@@ -36,25 +36,26 @@ const NavBar = () => {
     return (
         <>
             <nav className="NavBar">
-                {!editMode ? (
-                    <>
-                        <h1>My Items</h1>
-                        <button className="add-button" onClick={handleAddClick}>
-                            <FaPlus />
-                        </button>
-                    </>
-                ) : null}
-                {selectedItemId && !editMode ? (
-                    <>
-                        <button className="edit-button" onClick={handleEditClick}>
-                            <FaEdit />
-                        </button>
-                        <button className="delete-button" onClick={handleDeleteClick}>
-                            <FaTrash />
-                        </button>
-                    </>
-                ) : null}
-                <SearchBox />
+                <div className='nav-wrapper'>
+                    {!editMode ? (
+                        <>
+                            <button className="add-button" onClick={handleAddClick}>
+                                <FaPlus />
+                            </button>
+                        </>
+                    ) : null}
+                    {selectedItemId && !editMode ? (
+                        <>
+                            <button className="edit-button" onClick={handleEditClick}>
+                                <FaEdit />
+                            </button>
+                            <button className="delete-button" onClick={handleDeleteClick}>
+                                <FaTrash />
+                            </button>
+                        </>
+                    ) : null}
+                    <SearchBox />
+                </div>
             </nav>
         </>
     );

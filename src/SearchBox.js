@@ -12,7 +12,7 @@ function SearchBox() {
     <div className="search-box">
       <input
         type="text"
-        placeholder="Search items"
+        placeholder="Search "
         value={searchText}
         onChange={handleSearchTextChange}
       />

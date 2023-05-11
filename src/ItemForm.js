@@ -30,10 +30,13 @@ const ItemForm = () => {
 
     return (
         <>
-            <input disabled={!cntx.editMode} type="text" placeholder="Title" value={title ?? ''} 
+        <div className='input-form'>
+            <p>Date</p>
+            <input id='title' disabled={!cntx.editMode} type="text" placeholder="Title" value={title ?? ''} 
                 onInput={e => handleSetTitle(e.target.value)} required />
-            <textarea disabled={!cntx.editMode} placeholder="Body" value={body ?? ''} 
+            <textarea id='text-note' disabled={!cntx.editMode} placeholder="Body" value={body ?? ''} 
                 onChange={e => handleSetBody(e.target.value)} required></textarea>
+        </div>
         </>
     );
 };
