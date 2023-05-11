@@ -35,9 +35,9 @@ class ItemDB {
         return await this.db.put('items', item);
     }
 
-    async delete(itemId) {
+    async delete(item) {
         await this.ensureInit();
-        return await this.db.delete('items', itemId);
+        return await this.db.delete('items', item.id);
     }
 
     async searchItems(searchText) {
@@ -45,8 +45,8 @@ class ItemDB {
         let items = await this.getAll();
         searchText = searchText.toLowerCase();
         items = items.filter(item => 
-            item.title.toLowerCase().includes(searchText) ||
-            item.body.toLowerCase().includes(searchText));
+            item.title?.toLowerCase().includes(searchText) ||
+            item.body?.toLowerCase().includes(searchText));
         return items;
     }
 

@@ -2,10 +2,11 @@ import React, { useContext } from 'react';
 import { AppContext } from './AppContext';
 
 function Item({ item }) {
-  const { selectedItemId, setSelectedItemId } = useContext(AppContext);
+  const { selectedItemId, setSelectedItemId, setEditMode } = useContext(AppContext);
 
   const handleItemClick = () => {
     setSelectedItemId(item.id);
+    setEditMode(false);
   };
 
   return (
@@ -15,6 +16,7 @@ function Item({ item }) {
     >
       <h3>{item.title}</h3>
       <p>{item.body}</p>
+      <p>{item.date?.toLocaleString()}</p>
     </div>
   );
 }

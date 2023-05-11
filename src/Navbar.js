@@ -4,52 +4,60 @@ import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 import SearchBox from './SearchBox';
 
 const NavBar = () => {
-  const { selectedItemId, deleteItem, setEditMode, setNewItem } = useContext(
-    AppContext
-  );
+    const { 
+        addItem, updateItem, deleteItem,
+        selectedItemId, setSelectedItemId, getSelectedItem,
+        editMode, setEditMode } =
+            useContext(
+                AppContext
+            );
 
-  const handleAddClick = () => {
-    setNewItem(true);
-    setEditMode(false);
-  };
+    const handleAddClick = async () => {
+        let item = await addItem(null);
+        setEditMode(true);
+        setSelectedItemId(item.id);
+    };
 
-  const handleEditClick = () => {
-    setEditMode(true);
-  };
+    const handleEditClick = () => {
+        if (selectedItemId) {
+            setEditMode(true);
+            updateItem(getSelectedItem());
+        }
+    };
 
-  const handleDeleteClick = () => {
-    if (selectedItemId) {
-      deleteItem(selectedItemId);
-    }
-  };
+    const handleDeleteClick = () => {
+        if (selectedItemId) {
+            deleteItem(getSelectedItem());
+            setSelectedItemId();
+            setEditMode(false);
+        }
+    };
 
-  return (
-    <nav className="NavBar">
-      <h1>My Items</h1>
-      {selectedItemId ? (
+    return (
         <>
-          <button className="edit-button" onClick={handleEditClick}>
-            <FaEdit />
-          </button>
-          <button className="delete-button" onClick={handleDeleteClick}>
-            <FaTrash />
-          </button>
+            <nav className="NavBar">
+                {!editMode ? (
+                    <>
+                        <h1>My Items</h1>
+                        <button className="add-button" onClick={handleAddClick}>
+                            <FaPlus />
+                        </button>
+                    </>
+                ) : null}
+                {selectedItemId && !editMode ? (
+                    <>
+                        <button className="edit-button" onClick={handleEditClick}>
+                            <FaEdit />
+                        </button>
+                        <button className="delete-button" onClick={handleDeleteClick}>
+                            <FaTrash />
+                        </button>
+                    </>
+                ) : null}
+                <SearchBox />
+            </nav>
         </>
-      ) : (
-        <>
-          <button className="add-button" onClick={handleAddClick}>
-            <FaPlus />
-          </button>
-          <button className="edit-button" disabled>
-            <FaEdit />
-          </button>
-          <button className="delete-button" disabled>
-            <FaTrash />
-          </button>
-        </>
-      )}
-    </nav>
-  );
+    );
 };
 
 export default NavBar;

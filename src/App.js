@@ -13,7 +13,6 @@ function App() {
         <Navbar />
         <div className="container">
           <Sidebar />
-          <ItemList />
           <ItemForm />
         </div>
       </div>

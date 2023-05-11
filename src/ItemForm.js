@@ -8,12 +8,19 @@ const ItemForm = () => {
     let [body, setBody] = useState(item?.body || '');
     let [id, setId] = useState(item?.id);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        cntx.updateItem(id ? { id, title, body } : { title, body });
-        setTitle('');
-        setBody('');
+    const save = async ({title, body}) => {
+        var id1 = await cntx.updateItem(id ? { id, title, body } : { title, body });
+        setId(id1);
     };
+
+    const handleSetTitle = (title) => {
+        setTitle(title);
+        save({title, body});
+    }
+    const handleSetBody = (body) => {
+        setBody(body);
+        save({title, body});
+    }
 
     useEffect(() => {
         setTitle(item?.title);
@@ -22,11 +29,12 @@ const ItemForm = () => {
     }, [item?.title, item?.body]);
 
     return (
-        <form className="ItemForm" onSubmit={handleSubmit}>
-            <input type="text" placeholder="Title" value={title} onChange={e => setTitle(e.target.value)} required />
-            <textarea placeholder="Body" value={body} onChange={e => setBody(e.target.value)} required></textarea>
-            <button type="submit">{item ? 'Save' : 'Add'}</button>
-        </form>
+        <>
+            <input disabled={!cntx.editMode} type="text" placeholder="Title" value={title ?? ''} 
+                onInput={e => handleSetTitle(e.target.value)} required />
+            <textarea disabled={!cntx.editMode} placeholder="Body" value={body ?? ''} 
+                onChange={e => handleSetBody(e.target.value)} required></textarea>
+        </>
     );
 };
 
