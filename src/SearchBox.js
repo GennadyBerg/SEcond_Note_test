@@ -11,6 +11,7 @@ function SearchBox() {
   return (
     <div className="search-box">
       <input
+        id='seach'
         type="text"
         placeholder="Search "
         value={searchText}

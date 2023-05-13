@@ -9,12 +9,12 @@ import { AppProvider } from './AppContext';
 function App() {
   return (
     <AppProvider>
-      <h1>MY NOTES</h1>
+      <h5>MY NOTES</h5>
       <div className="app">
         <Navbar />
         <div className="container">
           <Sidebar />
-          <div id='vertical-line'></div>
+          <div className='vertical-line'></div>
           <ItemForm />
         </div>
       </div>

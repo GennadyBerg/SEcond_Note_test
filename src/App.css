@@ -1,40 +1,36 @@
 .app {
   display: flex;
   flex-direction: column;
-  height: 100vh;
   background-color: #f5f5f5;
+  max-width: 200vh;
 }
 
 .container {
   display: flex;
-  flex: 1;
-  padding: 20px;
-  margin-left: 2%;
-  margin-right: 2%;
+  flex-wrap: nowrap;
+  padding: 10px;
+  border-color: #4d4d4d;
 }
 
-.sidebar {
-  flex: 0 0 200px;
-  margin-right: 30px;
-  background-color: #fff;
+.Sidebar {
+  display: flex;
+  align-items: stretch;
+  margin-right: 10px;
+  background-color: #dddada;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   overflow: hidden;
-  max-inline-size: 30%;
+  max-inline-size: 32%;
 
 }
-   
+
 .item-list {
-  flex: 1;
   background-color: #fff;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 1px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   overflow: hidden;
-}
-
-.item-form {
-  flex: 0 0 400px;
-  margin-left: 20px;
+  border: #4d4d4d;
+  
 }
 
 h1,
@@ -43,18 +39,19 @@ h3,
 h4,
 h5,
 h6 {
-  margin-top: 10px;
+  margin-top: 5px;
 }
 
 h2 {
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 
 .nav-wrapper {
   display: flex;
-  flex: 1;
-  padding: 10px;
+  justify-content: start;
+  align-items: start;
 }
+
 button {
   cursor: pointer;
   background-color: transparent;
@@ -69,15 +66,15 @@ button {
 
 input[type='text'],
 textarea {
-  width: 30%;
+  width: auto;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 16px;
-  margin-bottom:5px;
+  margin-bottom: 5px;
+  margin-right: 20px;
   resize: none;
-  
-
+  text-align: initial;
 }
 
 button.primary {
@@ -111,31 +108,52 @@ button.disabled {
 button.disabled:hover {
   background-color: #f5f5f5;
 }
-/*.search-box  {
-  width: 30%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 16px;
- 
-  resize: none;
-}*/
-.input-form {
 
-  inline-size: 130vh;
+.input-form {
+margin-left: 10px;
+background-color: #dcd9d9;
+display: flex;
+flex-direction: column;
+flex-wrap: nowrap;
+width: 65%;
+height: auto;
+
+  
+
+}
+
+.title {
+  background-color: #c2c4c6;
+  display: inline;
   
 }
-title {
-  width: 130vh;
-}
+
 input-title {
-  width: 130vh;
-}
-text-note {
-  width: 130vh;
-}
-vertical-line {
-  max-width: 10px;
-  background-color: #686666;
+  display: inline;
+  font-size: 14px;
 }
 
+.text-note {
+  display: block;
+  height: 100%;
+  
+}
+
+.vertical-line {
+  min-width: 10px;
+  background-color: #b5b4b4;
+  
+}
+
+
+
+.NavBar {
+ position: static;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  display: -webkit-inline-flex;
+  display: inline-flex;
+  background-color: #b8b7b7;
+}

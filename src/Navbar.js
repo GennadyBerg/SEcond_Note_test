@@ -54,8 +54,8 @@ const NavBar = () => {
                             </button>
                         </>
                     ) : null}
-                    <SearchBox />
                 </div>
+                <SearchBox />
             </nav>
         </>
     );
