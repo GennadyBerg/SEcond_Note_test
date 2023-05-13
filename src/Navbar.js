@@ -4,13 +4,13 @@ import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 import SearchBox from './SearchBox';
 
 const NavBar = () => {
-    const { 
+    const {
         addItem, updateItem, deleteItem,
         selectedItemId, setSelectedItemId, getSelectedItem,
         editMode, setEditMode } =
-            useContext(
-                AppContext
-            );
+        useContext(
+            AppContext
+        );
 
     const handleAddClick = async () => {
         let item = await addItem(null);
@@ -37,23 +37,15 @@ const NavBar = () => {
         <>
             <nav className="NavBar">
                 <div className='nav-wrapper'>
-                    {!editMode ? (
-                        <>
-                            <button className="add-button" onClick={handleAddClick}>
-                                <FaPlus />
-                            </button>
-                        </>
-                    ) : null}
-                    {selectedItemId && !editMode ? (
-                        <>
-                            <button className="edit-button" onClick={handleEditClick}>
-                                <FaEdit />
-                            </button>
-                            <button className="delete-button" onClick={handleDeleteClick}>
-                                <FaTrash />
-                            </button>
-                        </>
-                    ) : null}
+                    <button disabled={editMode} className="add-button" onClick={handleAddClick}>
+                        <FaPlus />
+                    </button>
+                    <button disabled={editMode || !selectedItemId} className="edit-button" onClick={handleEditClick}>
+                        <FaEdit />
+                    </button>
+                    <button disabled={editMode || !selectedItemId} className="delete-button" onClick={handleDeleteClick}>
+                        <FaTrash />
+                    </button>
                 </div>
                 <SearchBox />
             </nav>

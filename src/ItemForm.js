@@ -31,8 +31,8 @@ const ItemForm = () => {
     return (
         <>
         <div className='input-form'>
-            <p>Date</p>
-            <input className='title' disabled={!cntx.editMode} type="text" placeholder="Title" value={title ?? ''} 
+            <p>{item?.date.toLocaleString()}</p>
+            <input className='title' disabled={!cntx.editMode} style={{fontSize:"x-large"}} type="text" placeholder="Title" value={title ?? ''} 
                 onInput={e => handleSetTitle(e.target.value)} required />
             <textarea className='text-note' disabled={!cntx.editMode} placeholder="Body" value={body ?? ''} 
                 onChange={e => handleSetBody(e.target.value)} required></textarea>
