@@ -9,8 +9,8 @@ const ItemForm = () => {
     let [id, setId] = useState(item?.id);
 
     const save = async ({title, body}) => {
-        var id1 = await cntx.updateItem(id ? { id, title, body } : { title, body });
-        setId(id1);
+        var item = await cntx.updateItem(id ? { id, title, body } : { title, body });
+        setId(item.id);
     };
 
     const handleSetTitle = (title) => {

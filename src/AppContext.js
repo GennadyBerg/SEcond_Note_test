@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import ItemDB from './ItemDB';
+import ItemDBIndexeddb from './ItemDBIndexeddb';
+import ItemDBQuinta from './ItemDBQuinta';
 
 export const AppContext = React.createContext();
 
@@ -8,7 +9,8 @@ export function AppProvider({ children }) {
     const [selectedItemId, setSelectedItemId] = useState(null);
     const [searchText, setSearchText] = useState('');
     const [editMode, setEditMode] = useState(false);
-    const itemDB = new ItemDB();
+    //const itemDB = new ItemDBIndexeddb();
+    const itemDB = new ItemDBQuinta();
 
     useEffect(() => {
         async function fetchItems() {
@@ -26,15 +28,9 @@ export function AppProvider({ children }) {
         filterItems();
     }, [searchText]);
 
-    const setDate = item => {
-        item["date"] = new Date()
-    }
-    
     const addItem = async (item) => {
         item = item ?? { title: "", body: "" };
-        setDate(item)
-        const addedItemId = await itemDB.add(item);
-        item = { ...item, id: addedItemId };
+        item = await itemDB.add(item);
         let allItems = filteredItems.map(itm => itm);
         allItems = [...allItems, item];
         setFilteredItems(allItems);
@@ -42,17 +38,13 @@ export function AppProvider({ children }) {
     };
 
     const updateItem = async (item) => {
-        setDate(item)
-        const updatedItemId = await itemDB.update(item);
-        const updatedItems = filteredItems.map((itm) => (itm.id === updatedItemId ? item : itm));
+        const updatedItem = await itemDB.update(item);
+        const updatedItems = filteredItems.map((itm) => (itm.id === updatedItem.id ? item : itm));
         setFilteredItems(updatedItems);
-        return updatedItemId;
+        return updatedItem;
     };
 
     const deleteItem = async (item) => {
-        /*for(let fi of filteredItems){
-            await itemDB.delete(fi);    
-        }*/
         await itemDB.delete(item);
         const updatedItems = filteredItems.filter((itm) => itm.id !== item.id);
         setFilteredItems(updatedItems);
@@ -60,7 +52,7 @@ export function AppProvider({ children }) {
     };
 
     const getSelectedItem = () => {
-        if (selectedItemId > 0) {
+        if (selectedItemId) {
             let res = filteredItems.filter((item) => item.id == selectedItemId);
             return res.length > 0 ? res[0] : null;
         }

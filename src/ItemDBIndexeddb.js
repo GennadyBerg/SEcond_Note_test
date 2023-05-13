@@ -1,6 +1,6 @@
 import { openDB } from 'idb';
 
-class ItemDB {
+class ItemDBIndexeddb {
     constructor() {
         this.dbPromise = openDB('items', 1, {
             upgrade: (db) => {
@@ -26,13 +26,18 @@ class ItemDB {
     }
 
     async add(item) {
+        item["date"] = new Date();
         await this.ensureInit();
-        return await this.db.add('items', item);
+        let res = await this.db.add('items', item);
+        item = { ...item, id: res.id };
+        return res;
     }
 
     async update(item) {
         await this.ensureInit();
-        return await this.db.put('items', item);
+        let res = await this.db.put('items', item);
+        item = { ...item, id: res.id };
+        return item;
     }
 
     async delete(item) {
@@ -52,4 +57,5 @@ class ItemDB {
 
 }
 
-export default ItemDB;
+export default ItemDBIndexeddb;
+

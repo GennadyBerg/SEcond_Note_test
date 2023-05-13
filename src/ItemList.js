@@ -12,7 +12,7 @@ const ItemList = () => {
 
   return (
     <div className="ItemList">
-      {filteredItems.map((item) => (
+      {filteredItems?.map((item) => (
         <Item key={item.id} item={item} />
       ))}
     </div>
