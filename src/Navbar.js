@@ -26,9 +26,13 @@ const NavBar = () => {
 
     const handleDeleteClick = () => {
         if (selectedItemId) {
-            deleteItem(getSelectedItem());
-            setSelectedItemId();
-            setEditMode(false);
+            let selectedItem = getSelectedItem();
+            const confirmed = window.confirm(`Are you sure you want to delete ${selectedItem.title}?`);
+            if (confirmed) {
+                deleteItem(selectedItem);
+                setSelectedItemId();
+                setEditMode(false);
+            }
         }
     };
 

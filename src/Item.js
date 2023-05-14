@@ -14,9 +14,6 @@ function Item({ item }) {
     var dateFormat = itemDate?.getDate() == today.getDate() ?
         { hour: 'numeric', minute: 'numeric' } :
         { year: "numeric", month: "short", day: "numeric" };
-    if (item.body) {
-        let a = "";
-    }
     return (
         <div
             className={`item ${item?.id === selectedItemId ? "selected-item" : "unselected-item"}`}            
