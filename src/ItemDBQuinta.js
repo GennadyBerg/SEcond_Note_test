@@ -2,9 +2,9 @@ import { openDB } from 'idb';
 
 class ItemDBQuinta {
     constructor() {
-        this.apiKey = "a-W7ummIXcLOo_tCkYWOC9";
-        this.appId = "cfWQJcGsPlq4oEWQFdTSk9";
-        this.entityId = "aQfXrxe8jar4ktWR3cRZvV";
+        this.apiKey = "ddJuy7W41owiomWQSJg8oU";
+        this.appId = "cBzKO5W49msBZdPL8bb8o6";
+        this.entityId = "c2W6JdNCjbW4tcSvacnmoj";
         this.dbUrl = "https://quintadb.com";
         this.dbAppUrl = `${this.dbUrl}/apps/${this.appId}`;
         this.dbTypesUrl = `${this.dbAppUrl}/dtypes`;
@@ -13,17 +13,15 @@ class ItemDBQuinta {
     }
 
     async ensureInit() {
-        if (this.inInit)
+        if (this.initiated)
             return;
-        this.inInit = true;
-        try {
-            this.fieldsMap = await this.getFieldsMap();
-        }
-        finally {
-            this.inInit = false;
-        }
-
+        this.fieldsMap = await this.getFieldsMap();
+        this.initiated = true;
     }
+
+    getFieldName = (columnName) => this.fieldsMap[columnName];
+
+    getColumnName = (fieldName) => this.fieldsMap[fieldName];
 
     getEntityUrl = (entityId) => `${this.dbTypesUrl}/${entityId}.json`;
 
@@ -44,7 +42,7 @@ class ItemDBQuinta {
         let fieldsMap = {};
         const fields = await this.execRequest(
             "GET",
-            `${this.dbAppUrl}/entities/${this.entityId}/properties.json?${this.objectToQueryParams({ rest_api_key: this.apiKey })}`,
+            `${this.dbAppUrl}/entities/${this.entityId}/properties.json`,
             data => data.fields.reduce((acc, obj) => {
                 fieldsMap[acc.name] = acc.id;
                 fieldsMap[acc.id] = acc.name;
@@ -55,8 +53,8 @@ class ItemDBQuinta {
     }
 
     async getAll() {
+        await this.ensureInit();
         var params = ({
-            "rest_api_key": this.apiKey,
             "page": 1,
             "name_value": 1,
             "fetch_all": true,
@@ -65,26 +63,26 @@ class ItemDBQuinta {
         return (
             this.execRequest(
                 "GET",
-                `${this.entityUrl}?${this.objectToQueryParams(params)}`,
-                data => data.records.map(d => this.getItem(d))
+                this.entityUrl,
+                data => data.records.map(d => this.getItem(d),
+                params)
             )
         );
     }
-    async execRequest(method, url, transformResultFunc = undefined, values = undefined) {
-        this.ensureInit();
-        let body = undefined
-        if (method != "GET") {
-            body = {
-                "rest_api_key": this.apiKey
-            };
+    async execRequest(method, url, transformResultFunc = undefined, values = undefined, body = {}) {
+        let useInilineParams = method === "GET";
+        body.rest_api_key = this.apiKey;
+        if (values)
+            body.values = { ...body?.values ?? [], ...values };
 
-            if (values)
-                body.values = { ...body?.values ?? [], ...values };
+        if (useInilineParams) {
+            url = `${url}?${this.objectToQueryParams(body)}`
         }
+
         var requestOptions = {
             method,
             headers: this.getCommonHeaders(),
-            body: JSON.stringify(body),
+            body: useInilineParams ? undefined : JSON.stringify(body),
             redirect: 'follow'
         };
 
@@ -94,34 +92,49 @@ class ItemDBQuinta {
                 throw new Error('Request failed');
             }
             const data = await response.json();
-            if (transformResultFunc)
-                return transformResultFunc(data);
+            if (transformResultFunc) {
+                let res = transformResultFunc(data);
+                return res;
+            }
         } catch (error) {
             console.error(error);
         }
     }
 
-    getItem = (record) => ({ id: record.id, title: record.values[this.fieldsMap["title"]], body: record.values[this.fieldsMap["body"]], date: new Date(record.created_at) });
+    //getItem = (record) => ({ id: record.id, title: record.values[this.getColumnName("title")], body: record.values[this.getColumnName("body")], date: new Date(record.created_at) });
+    getItem(record) {
+        return { id: record.id, title: this.getValue(record, "title"), body: this.getValue(record, "body"), date: new Date(record.created_at) };
+    }
+
+    getValue(record, fieldName) {
+        let name = fieldName in record.values ? fieldName : this.getColumnName(fieldName);
+        return record.values[name];
+    }
 
     async add(item) {
+        await this.ensureInit();
         return this.execRequest(
             "POST",
             this.appUrl,
             data => this.getItem(data.record),
-            ({ entity_id: this.entityId, [this.fieldsMap["title"]]: item.title,  [this.fieldsMap["body"]]: item.body })
+            ({ entity_id: this.entityId, 
+            [this.getColumnName("title")]: item.title ?? ' ', [this.getColumnName("body")]: item.body
+         })
         )
     }
 
     async update(item) {
+        await this.ensureInit();
         return this.execRequest(
             "PUT",
             this.getEntityUrl(item.id),
             data => this.getItem(data.record),
-            ({  [this.fieldsMap["title"]]: item.title,  [this.fieldsMap["body"]]: item.body })
+            ({ [this.getColumnName("title")]: item.title, [this.getColumnName("body")]: item.body })
         )
     }
 
     async delete(item) {
+        await this.ensureInit();
         this.execRequest(
             "DELETE",
             this.getEntityUrl(item.id)

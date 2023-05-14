@@ -13,7 +13,7 @@ const ItemList = () => {
   return (
     <div className="ItemList">
       {filteredItems?.map((item) => (
-        <Item key={item.id} item={item} />
+        <Item key={item?.id} item={item} />
       ))}
     </div>
   );

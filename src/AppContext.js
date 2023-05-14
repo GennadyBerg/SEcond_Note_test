@@ -9,14 +9,16 @@ export function AppProvider({ children }) {
     const [selectedItemId, setSelectedItemId] = useState(null);
     const [searchText, setSearchText] = useState('');
     const [editMode, setEditMode] = useState(false);
-    //const itemDB = new ItemDBIndexeddb();
-    const itemDB = new ItemDBQuinta();
+    let [itemDB, setItemDB] = useState(false);
 
     useEffect(() => {
         async function fetchItems() {
             const result = await itemDB.getAll();
             setFilteredItems(result);
         }
+        //itemDB = new ItemDBQuinta();
+        itemDB = new ItemDBIndexeddb();
+        setItemDB(itemDB);
         fetchItems();
     }, []);
 
@@ -29,7 +31,7 @@ export function AppProvider({ children }) {
     }, [searchText]);
 
     const addItem = async (item) => {
-        item = item ?? { title: "", body: "" };
+        item = item ?? { title: undefined, body: undefined };
         item = await itemDB.add(item);
         let allItems = filteredItems.map(itm => itm);
         allItems = [...allItems, item];
@@ -39,7 +41,7 @@ export function AppProvider({ children }) {
 
     const updateItem = async (item) => {
         const updatedItem = await itemDB.update(item);
-        const updatedItems = filteredItems.map((itm) => (itm.id === updatedItem.id ? item : itm));
+        const updatedItems = filteredItems.map((itm) => (itm.id === updatedItem.id ? updatedItem : itm));
         setFilteredItems(updatedItems);
         return updatedItem;
     };

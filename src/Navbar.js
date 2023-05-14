@@ -21,7 +21,6 @@ const NavBar = () => {
     const handleEditClick = () => {
         if (selectedItemId) {
             setEditMode(true);
-            updateItem(getSelectedItem());
         }
     };
 

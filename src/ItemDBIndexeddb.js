@@ -29,14 +29,14 @@ class ItemDBIndexeddb {
         item["date"] = new Date();
         await this.ensureInit();
         let res = await this.db.add('items', item);
-        item = { ...item, id: res.id };
-        return res;
+        item = { ...item, id: res };
+        return item;
     }
 
     async update(item) {
         await this.ensureInit();
         let res = await this.db.put('items', item);
-        item = { ...item, id: res.id };
+        item = { ...item, id: res };
         return item;
     }
 
