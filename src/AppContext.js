@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
-import ItemDBIndexeddb from './ItemDBIndexeddb';
-import ItemDBQuinta from './ItemDBQuinta';
+import ItemDBIndexeddb from './DB/ItemDBIndexeddb';
+import ItemDBQuinta from './DB/ItemDBQuinta';
 
-export const AppContext = React.createContext();
+const AppContext = React.createContext();
 
-export function AppProvider({ children }) {
+function AppProvider({ children }) {
     const [filteredItems, setFilteredItems] = useState([]);
     const [selectedItemId, setSelectedItemId] = useState(null);
     const [searchText, setSearchText] = useState('');
@@ -94,3 +94,4 @@ export function AppProvider({ children }) {
 export const useAppContext = () => {
     return useContext(AppContext);
 };
+export {AppContext, AppProvider};

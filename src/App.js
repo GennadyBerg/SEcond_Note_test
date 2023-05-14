@@ -1,9 +1,9 @@
 import React from 'react';
 import './App.css';
-import Navbar from './Navbar';
-import Sidebar from './Sidebar';
-import ItemList from './ItemList';
-import ItemForm from './ItemForm';
+import Navbar from './Components/Navbar';
+import Sidebar from './Components/Sidebar';
+import ItemList from './Components/ItemList';
+import ItemForm from './Components/ItemForm';
 import { AppProvider } from './AppContext';
 
 function App() {

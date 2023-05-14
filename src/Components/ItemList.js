@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import Item from './Item';
 import ItemForm from './ItemForm';
 import SearchBox from './SearchBox';
-import { AppContext } from './AppContext';
+import { AppContext } from '../AppContext';
 import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 
 const ItemList = () => {

@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
-import { AppContext } from './AppContext';
+import { AppContext } from '../AppContext';
 import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 import SearchBox from './SearchBox';
 
-const NavBar = () => {
+export const NavBar = () => {
     const {
         addItem, updateItem, deleteItem,
         selectedItemId, setSelectedItemId, getSelectedItem,

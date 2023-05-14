@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { AppContext } from './AppContext';
+import { AppContext } from '../AppContext';
 
 const ItemForm = () => {
     const cntx = useContext(AppContext);
