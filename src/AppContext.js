@@ -11,13 +11,24 @@ export function AppProvider({ children }) {
     const [editMode, setEditMode] = useState(false);
     let [itemDB, setItemDB] = useState(false);
 
+    const getDB = () => {
+        let dbKey = process.env.REACT_APP_USE_DB_CMD ?? process.env.REACT_APP_USE_DB;
+        switch (dbKey) {
+            case 'indexeddb':
+                return new ItemDBIndexeddb();
+            case 'quintadb':
+                return new ItemDBQuinta();
+            default:
+                throw new Error(`Support for ${dbKey} DB is not implemented yet.`);
+        }
+    }
+
     useEffect(() => {
         async function fetchItems() {
             const result = await itemDB.getAll();
             setFilteredItems(result);
         }
-        //itemDB = new ItemDBQuinta();
-        itemDB = new ItemDBIndexeddb();
+        itemDB = getDB();
         setItemDB(itemDB);
         fetchItems();
     }, []);

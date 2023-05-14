@@ -2,9 +2,9 @@ import { openDB } from 'idb';
 
 class ItemDBQuinta {
     constructor() {
-        this.apiKey = "ddJuy7W41owiomWQSJg8oU";
-        this.appId = "cBzKO5W49msBZdPL8bb8o6";
-        this.entityId = "c2W6JdNCjbW4tcSvacnmoj";
+        this.apiKey = process.env.REACT_APP_QNT_API_KEY;
+        this.appId = process.env.REACT_APP_QNT_APP_ID;
+        this.entityId = process.env.REACT_APP_QNT_ENTITY_ID;
         this.dbUrl = "https://quintadb.com";
         this.dbAppUrl = `${this.dbUrl}/apps/${this.appId}`;
         this.dbTypesUrl = `${this.dbAppUrl}/dtypes`;
